@@ -1,42 +1,95 @@
 {
-	"name": "vscode-ov",
-	"displayName": "vscode-ov",
-	"description": "VSCode extension for the openVALIDATION langauge",
-	"version": "0.0.1",
-	"engines": {
-		"vscode": "^1.40.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onCommand:extension.helloWorld"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile",
-		"test": "node ./out/test/runTest.js"
-	},
-	"devDependencies": {
-		"@types/glob": "^7.1.1",
-		"@types/mocha": "^5.2.7",
-		"@types/node": "^12.11.7",
-		"@types/vscode": "^1.40.0",
-		"glob": "^7.1.5",
-		"mocha": "^6.2.2",
-		"typescript": "^3.6.4",
-		"tslint": "^5.20.0",
-		"vscode-test": "^1.2.2"
-	}
+  "name": "vscode-ov",
+  "displayName": "vscode-ov",
+  "description": "VSCode extension for the openVALIDATION langauge",
+  "version": "0.0.1",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.40.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters"
+  ],
+  "activationEvents": [
+    "onLanguage:openVALIDATION",
+    "onLanguage:ov"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "openVALIDATION",
+        "aliases": [
+          "openVALIDATION",
+          "ov"
+        ],
+        "extensions": [
+          ".ov",
+          ".ovl",
+          "openVALIDATION"
+        ]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "openVALIDATION",
+        "scopeName": "source.ov",
+        "path": "./src/syntax-grammar/openVALIDATION.tmGrammar.json"
+      }
+    ],
+    "configuration": {
+      "title": "openVALIDATION",
+      "properties": {
+        "openVALIDATION.culture": {
+          "type": "string",
+          "default": "en",
+          "enum": [
+            "en",
+            "de",
+            "ru"
+          ],
+          "enumDescriptions": [
+            "enables the english-language for openVALIDATION-Code",
+            "enables the german-language for openVALIDATION-Code",
+            "enables the russian-language for openVALIDATION-Code"
+          ]
+        },
+        "openVALIDATION.language": {
+          "type": "string",
+          "default": "Java",
+          "enum": [
+            "Java",
+            "CSharp"
+          ],
+          "enumDescriptions": [
+            "enables the english-language for openVALIDATION-Code",
+            "enables the german-language for openVALIDATION-Code"
+          ]
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.1",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.11.7",
+    "@types/vscode": "^1.40.0",
+    "glob": "^7.1.5",
+    "mocha": "^6.2.2",
+    "typescript": "^3.6.4",
+    "tslint": "^5.20.0",
+    "vscode-test": "^1.2.2"
+  },
+  "dependencies": {
+    "ov-language-server": "file:../../openVALIDATION_IDE/LanguageServer/ov-language-server",
+    "vscode-languageclient": "^5.2.1"
+  }
 }
