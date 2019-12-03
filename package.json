@@ -60,11 +60,13 @@
           "default": "Java",
           "enum": [
             "Java",
-            "CSharp"
+            "CSharp",
+            "Python"
           ],
           "enumDescriptions": [
-            "enables the english-language for openVALIDATION-Code",
-            "enables the german-language for openVALIDATION-Code"
+            "generates Java code",
+            "generates CSharp code",
+            "generates Python code"
           ]
         }
       }

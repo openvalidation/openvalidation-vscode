@@ -95,11 +95,13 @@ export function activate(context: vscode.ExtensionContext) {
         fs.mkdirSync(folderPath, { recursive: true });
       }
 
-      // TODO: Look for file-ending of programming-language
       // TODO: Add framework-Results
 
       fs.writeFile(
-        path.join(folderPath, "implementationResult.cs"),
+        path.join(
+          folderPath,
+          "implementationResult." + getFileEnding(jsonParams.language)
+        ),
         jsonParams.value,
         function(err: any) {
           if (err) {
@@ -139,6 +141,29 @@ function getLanguage(): string {
     language = "Java";
   }
   return language;
+}
+
+/**
+ * Generates the default file ending for the given language
+ *
+ * @export
+ * @param {LanguageEnum} language programming-language
+ * @returns {string} default file ending for the language
+ */
+function getFileEnding(language: string): string {
+  switch (language) {
+    case "Java":
+      return "java";
+    case "CSharp":
+      return "cs";
+    case "JavaScript":
+    case "Node":
+      return "js";
+    case "Python":
+      return "py";
+    default:
+      return "";
+  }
 }
 
 // this method is called when your extension is deactivated
