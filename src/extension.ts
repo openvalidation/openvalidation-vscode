@@ -1,9 +1,14 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
+import * as fs from "fs";
+import {
+  CultureEnum,
+  getFileEnding,
+  LanguageEnum,
+  NotificationEnum
+} from "ov-language-server-types";
 import * as path from "path";
 import * as vscode from "vscode";
-import * as fs from "fs";
-
 import {
   LanguageClient,
   LanguageClientOptions,
@@ -74,13 +79,13 @@ export function activate(context: vscode.ExtensionContext) {
   let disposable = client.start();
 
   client.onReady().then(() => {
-    client.sendNotification("textDocument/schemaChanged", {
+    client.sendNotification(NotificationEnum.SchemaChanged, {
       schema: '{ "Testdecimal": 20 }',
       uri: ""
     });
     updateCultureAndLanguage(client);
 
-    client.onNotification("textDocument/generatedCode", (params: any) => {
+    client.onNotification(NotificationEnum.GeneratedCode, (params: any) => {
       let workspaceFolder: vscode.WorkspaceFolder[] | undefined =
         vscode.workspace.workspaceFolders;
       if (!workspaceFolder || workspaceFolder.length === 0) {
@@ -116,11 +121,11 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function updateCultureAndLanguage(client: LanguageClient): void {
-  client.sendNotification("textDocument/cultureChanged", {
+  client.sendNotification(NotificationEnum.CultureChanged, {
     culture: getCulture(),
     uri: ""
   });
-  client.sendNotification("textDocument/languageChanged", {
+  client.sendNotification(NotificationEnum.LanguageChanged, {
     language: getLanguage(),
     uri: ""
   });
@@ -130,7 +135,7 @@ function getCulture(): string {
   var culture: string = vscode.workspace.getConfiguration("openVALIDATION")
     .culture;
   if (!culture) {
-    culture = "en";
+    culture = CultureEnum.English;
   }
   return culture;
 }
@@ -138,32 +143,9 @@ function getCulture(): string {
 function getLanguage(): string {
   var language = vscode.workspace.getConfiguration("openVALIDATION").language;
   if (!language) {
-    language = "Java";
+    language = LanguageEnum.JavaScript;
   }
   return language;
-}
-
-/**
- * Generates the default file ending for the given language
- *
- * @export
- * @param {LanguageEnum} language programming-language
- * @returns {string} default file ending for the language
- */
-function getFileEnding(language: string): string {
-  switch (language) {
-    case "Java":
-      return "java";
-    case "CSharp":
-      return "cs";
-    case "JavaScript":
-    case "Node":
-      return "js";
-    case "Python":
-      return "py";
-    default:
-      return "";
-  }
 }
 
 // this method is called when your extension is deactivated

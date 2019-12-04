@@ -92,6 +92,7 @@
   },
   "dependencies": {
     "ov-language-server": "file:../../openVALIDATION_IDE/LanguageServer/ov-language-server",
+    "ov-language-server-types": "0.0.1",
     "vscode-languageclient": "^5.2.1"
   }
 }
