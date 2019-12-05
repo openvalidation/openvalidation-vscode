@@ -16,6 +16,9 @@ import {
   TransportKind
 } from "vscode-languageclient";
 
+var cultureStatusBar: vscode.StatusBarItem;
+var languageStatusBar: vscode.StatusBarItem;
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -118,17 +121,110 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   context.subscriptions.push(disposable);
+
+  // create a new status bar item that we can now manage
+  languageStatusBar = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    100
+  );
+  languageStatusBar.command = "language.popup";
+  languageStatusBar.text = "language";
+  context.subscriptions.push(languageStatusBar);
+  languageStatusBar.show();
+
+  let languageItems = generateQuickPickItemsForLanguage();
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("language.popup", function() {
+      vscode.window.showQuickPick(languageItems).then(result => {
+        for (let [key, value] of Object.entries(LanguageEnum)) {
+          if (!result || result.label !== key) {
+            continue;
+          }
+
+          vscode.workspace
+            .getConfiguration("openVALIDATION")
+            .update("language", value);
+          break;
+        }
+      });
+    })
+  );
+
+  // create a new status bar item that we can now manage
+  cultureStatusBar = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    100
+  );
+  cultureStatusBar.command = "culture.popup";
+  cultureStatusBar.text = "culture";
+  context.subscriptions.push(cultureStatusBar);
+  cultureStatusBar.show();
+
+  let cultureItems = generateQuickPickItemsForCulture();
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("culture.popup", function() {
+      vscode.window.showQuickPick(cultureItems).then(result => {
+        for (let [key, value] of Object.entries(CultureEnum)) {
+          if (!result || result.label !== key) {
+            continue;
+          }
+
+          vscode.workspace
+            .getConfiguration("openVALIDATION")
+            .update("culture", value);
+          break;
+        }
+      });
+    })
+  );
+}
+
+function generateQuickPickItemsForLanguage(): vscode.QuickPickItem[] {
+  let returnList: vscode.QuickPickItem[] = [];
+
+  for (let [key, value] of Object.entries(LanguageEnum)) {
+    returnList.push(<vscode.QuickPickItem>{
+      label: key,
+      description: `Changes the language to ${key}`
+    });
+  }
+
+  return returnList;
+}
+
+function generateQuickPickItemsForCulture(): vscode.QuickPickItem[] {
+  let returnList: vscode.QuickPickItem[] = [];
+
+  for (let [key, value] of Object.entries(CultureEnum)) {
+    returnList.push(<vscode.QuickPickItem>{
+      label: key,
+      description: `Changes the culture to ${key}`
+    });
+  }
+
+  return returnList;
 }
 
 function updateCultureAndLanguage(client: LanguageClient): void {
+  let culture: string = getCulture();
   client.sendNotification(NotificationEnum.CultureChanged, {
-    culture: getCulture(),
+    culture: culture,
     uri: ""
   });
+  // TODO: Get the "beautified" string from the enum
+  cultureStatusBar.text = culture;
+  cultureStatusBar.show();
+
+  let language: string = getLanguage();
   client.sendNotification(NotificationEnum.LanguageChanged, {
-    language: getLanguage(),
+    language: language,
     uri: ""
   });
+  // TODO: Get the "beautified" string from the enum
+  languageStatusBar.text = language;
+  languageStatusBar.show();
 }
 
 function getCulture(): string {
