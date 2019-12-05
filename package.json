@@ -61,11 +61,15 @@
           "enum": [
             "Java",
             "CSharp",
+            "JavaScript",
+            "Node",
             "Python"
           ],
           "enumDescriptions": [
             "generates Java code",
             "generates CSharp code",
+            "generates JavaScript code",
+            "generates Node code",
             "generates Python code"
           ]
         }
