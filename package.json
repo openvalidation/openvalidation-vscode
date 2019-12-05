@@ -80,8 +80,7 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile",
-    "test": "node ./out/test/runTest.js"
+    "pretest": "npm run compile"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
@@ -95,7 +94,7 @@
     "vscode-test": "^1.2.2"
   },
   "dependencies": {
-    "ov-language-server": "file:../../openVALIDATION_IDE/LanguageServer/ov-language-server",
+    "ov-language-server": "file:../ov-language-server",
     "ov-language-server-types": "0.0.1",
     "vscode-languageclient": "^5.2.1"
   }
