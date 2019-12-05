@@ -78,14 +78,24 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
+  // vscode.workspace.onDidChangeTextDocument(event => {
+  //   // TODO: Validate, if the used schema was changed
+  //   if (event.document.languageId === "json") {
+  //     client.sendNotification(DidChangeTextDocumentNotification.method, {
+  //       schema: '{ "Testdecimal": 20 }',
+  //       uri: getCurrentDocumentUri()
+  //     });
+  //   }
+  // });
   // Start the client. This will also launch the server
   let disposable = client.start();
 
   client.onReady().then(() => {
     client.sendNotification(NotificationEnum.SchemaChanged, {
       schema: '{ "Testdecimal": 20 }',
-      uri: ""
+      uri: getCurrentDocumentUri()
     });
+
     updateCultureAndLanguage(client);
 
     client.onNotification(NotificationEnum.GeneratedCode, (params: any) => {
@@ -207,11 +217,19 @@ function generateQuickPickItemsForCulture(): vscode.QuickPickItem[] {
   return returnList;
 }
 
+function getCurrentDocumentUri(): string {
+  var ovDocument = vscode.workspace.textDocuments.find(document => {
+    return document.languageId === "openVALIDATION";
+  });
+  return !ovDocument ? "" : ovDocument.uri.toString();
+}
+
 function updateCultureAndLanguage(client: LanguageClient): void {
+  let uri: string = getCurrentDocumentUri();
   let culture: string = getCulture();
   client.sendNotification(NotificationEnum.CultureChanged, {
     culture: culture,
-    uri: ""
+    uri: uri
   });
   // TODO: Get the "beautified" string from the enum
   cultureStatusBar.text = culture;
@@ -220,7 +238,7 @@ function updateCultureAndLanguage(client: LanguageClient): void {
   let language: string = getLanguage();
   client.sendNotification(NotificationEnum.LanguageChanged, {
     language: language,
-    uri: ""
+    uri: uri
   });
   // TODO: Get the "beautified" string from the enum
   languageStatusBar.text = language;
