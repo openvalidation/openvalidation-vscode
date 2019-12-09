@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { LanguageEnum, CultureEnum } from "ov-language-server-types";
+import { getCulture, getLanguage } from "./util-functions";
 
 export class StatusBarExtension {
   private cultureStatusBar: vscode.StatusBarItem;
@@ -7,11 +8,11 @@ export class StatusBarExtension {
 
   constructor(private readonly context: vscode.ExtensionContext) {
     this.languageStatusBar = vscode.window.createStatusBarItem(
-      vscode.StatusBarAlignment.Right,
+      vscode.StatusBarAlignment.Left,
       100
     );
     this.cultureStatusBar = vscode.window.createStatusBarItem(
-      vscode.StatusBarAlignment.Right,
+      vscode.StatusBarAlignment.Left,
       100
     );
   }
@@ -24,7 +25,7 @@ export class StatusBarExtension {
   private createLanguageItem() {
     // create a new status bar item that we can now manage
     this.languageStatusBar.command = "language.popup";
-    this.languageStatusBar.text = "language";
+    this.languageStatusBar.text = getLanguage();
     this.context.subscriptions.push(this.languageStatusBar);
     this.languageStatusBar.show();
 
@@ -62,7 +63,7 @@ export class StatusBarExtension {
   private createCultureItem() {
     // create a new status bar item that we can now manage
     this.cultureStatusBar.command = "culture.popup";
-    this.cultureStatusBar.text = "culture";
+    this.cultureStatusBar.text = getCulture();
     this.context.subscriptions.push(this.cultureStatusBar);
     this.cultureStatusBar.show();
 

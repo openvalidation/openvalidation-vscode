@@ -94,7 +94,7 @@
     "vscode-test": "^1.2.2"
   },
   "dependencies": {
-    "ov-language-server": "file:../ov-language-server",
+    "ov-language-server": "0.0.13",
     "ov-language-server-types": "0.0.1",
     "vscode-languageclient": "^5.2.1"
   }

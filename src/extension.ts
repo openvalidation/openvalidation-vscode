@@ -10,10 +10,8 @@ import { StatusBarExtension } from "./status-bar-extension";
 import {
   getCulture,
   getCurrentOvDocumentUri,
-  getLanguage,
-  getCurrentOvDocument
+  getLanguage
 } from "./util-functions";
-import { createConverter } from "vscode-languageclient/lib/codeConverter";
 
 var statusBarExtension: StatusBarExtension;
 
@@ -77,7 +75,6 @@ function handleGeneratedCodeNotification(params: any) {
   }
 
   // TODO: Add framework-Results
-
   fs.writeFile(
     path.join(
       folderPath,
