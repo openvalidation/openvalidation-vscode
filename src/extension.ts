@@ -1,17 +1,21 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as fs from "fs";
-import { getFileEnding, NotificationEnum } from "ov-language-server-types";
-import * as path from "path";
+import { NotificationEnum } from "ov-language-server-types";
 import * as vscode from "vscode";
-import { LanguageClient } from "vscode-languageclient";
+import {
+  LanguageClient,
+  DidChangeTextDocumentNotification
+} from "vscode-languageclient";
 import { ClientCreator } from "./client-creator";
 import { StatusBarExtension } from "./status-bar-extension";
 import {
   getCulture,
   getCurrentOvDocumentUri,
-  getLanguage
+  getLanguage,
+  getCurrentOvDocument,
+  handleGeneratedCodeNotification
 } from "./util-functions";
+import { createConverter } from "vscode-languageclient/lib/codeConverter";
 
 var statusBarExtension: StatusBarExtension;
 
@@ -35,15 +39,18 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
-  // vscode.workspace.onDidChangeTextDocument(event => {
-  //   // TODO: Validate, if it actually was the schema.json
-  //   if (event.document.languageId === "json") {
-  //     client.sendNotification(
-  //       "textDocument/didChange",
-  //       createConverter().asChangeTextDocumentParams(event.document)
-  //     );
-  //   }
-  // });
+  vscode.workspace.onDidChangeTextDocument(event => {
+    // TODO: Validate, if it actually was the schema.json
+    if (event.document.languageId === "json") {
+      let ovDocument = getCurrentOvDocument();
+      if (!!ovDocument) {
+        client.sendNotification(
+          DidChangeTextDocumentNotification.type,
+          createConverter().asChangeTextDocumentParams(ovDocument)
+        );
+      }
+    }
+  });
 
   // Start the client. This will also launch the server
   client.onReady().then(() => startUp(client));
@@ -56,36 +63,6 @@ function startUp(client: LanguageClient): void {
 
   client.onNotification(NotificationEnum.GeneratedCode, (params: any) =>
     handleGeneratedCodeNotification(params)
-  );
-}
-
-function handleGeneratedCodeNotification(params: any) {
-  let workspaceFolder: vscode.WorkspaceFolder[] | undefined =
-    vscode.workspace.workspaceFolders;
-  if (!workspaceFolder || workspaceFolder.length === 0) {
-    return;
-  }
-
-  let rootPath: string = workspaceFolder[0].uri.fsPath;
-  let jsonParams = JSON.parse(params);
-  let folderPath: string = rootPath + "\\" + jsonParams.language;
-
-  if (!fs.existsSync(folderPath)) {
-    fs.mkdirSync(folderPath, { recursive: true });
-  }
-
-  // TODO: Add framework-Results
-  fs.writeFile(
-    path.join(
-      folderPath,
-      "implementationResult." + getFileEnding(jsonParams.language)
-    ),
-    jsonParams.value,
-    (err: any) => {
-      if (err) {
-        return console.error(err);
-      }
-    }
   );
 }
 

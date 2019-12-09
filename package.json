@@ -1,7 +1,7 @@
 {
   "name": "vscode-ov",
   "displayName": "vscode-ov",
-  "description": "VSCode extension for the openVALIDATION langauge",
+  "description": "VSCode extension for the openVALIDATION language",
   "version": "0.0.1",
   "license": "MIT",
   "engines": {
@@ -94,8 +94,8 @@
     "vscode-test": "^1.2.2"
   },
   "dependencies": {
-    "ov-language-server": "0.0.13",
-    "ov-language-server-types": "0.0.1",
+    "ov-language-server": "0.0.14",
+    "ov-language-server-types": "0.0.3",
     "vscode-languageclient": "^5.2.1"
   }
 }

@@ -9,11 +9,11 @@ export class StatusBarExtension {
   constructor(private readonly context: vscode.ExtensionContext) {
     this.languageStatusBar = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Left,
-      100
+      1
     );
     this.cultureStatusBar = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Left,
-      100
+      1
     );
   }
 
@@ -25,9 +25,8 @@ export class StatusBarExtension {
   private createLanguageItem() {
     // create a new status bar item that we can now manage
     this.languageStatusBar.command = "language.popup";
-    this.languageStatusBar.text = getLanguage();
     this.context.subscriptions.push(this.languageStatusBar);
-    this.languageStatusBar.show();
+    this.updateLanguage();
 
     let languageItems = this.generateQuickPickItemsForLanguage();
 
@@ -63,9 +62,8 @@ export class StatusBarExtension {
   private createCultureItem() {
     // create a new status bar item that we can now manage
     this.cultureStatusBar.command = "culture.popup";
-    this.cultureStatusBar.text = getCulture();
     this.context.subscriptions.push(this.cultureStatusBar);
-    this.cultureStatusBar.show();
+    this.updateCulture();
 
     let cultureItems = this.generateQuickPickItemsForCulture();
 
@@ -98,15 +96,27 @@ export class StatusBarExtension {
     return returnList;
   }
 
-  public updateLanguage(language: string): void {
-    // TODO: Get the "beautified" string from the enum
+  public updateLanguage(language: string = getLanguage()): void {
+    var languageTuple = Object.entries(LanguageEnum).find(
+      cul => cul[1] === language
+    );
+    if (!languageTuple) {
+      return;
+    }
+
     this.languageStatusBar.text = language;
     this.languageStatusBar.show();
   }
 
-  public updateCulture(culture: string): void {
-    // TODO: Get the "beautified" string from the enum
-    this.cultureStatusBar.text = culture;
+  public updateCulture(culture: string = getCulture()): void {
+    var cultureTuple = Object.entries(CultureEnum).find(
+      cul => cul[1] === culture
+    );
+    if (!cultureTuple) {
+      return;
+    }
+
+    this.cultureStatusBar.text = cultureTuple[0];
     this.cultureStatusBar.show();
   }
 }
