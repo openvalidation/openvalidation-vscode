@@ -104,7 +104,7 @@ export class StatusBarExtension {
       return;
     }
 
-    this.languageStatusBar.text = language;
+    this.languageStatusBar.text = `openVALIDATION: ${language}`;
     this.languageStatusBar.show();
   }
 
@@ -116,7 +116,7 @@ export class StatusBarExtension {
       return;
     }
 
-    this.cultureStatusBar.text = cultureTuple[0];
+    this.cultureStatusBar.text = `openVALIDATION: ${cultureTuple[0]}`;
     this.cultureStatusBar.show();
   }
 }

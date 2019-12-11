@@ -1,21 +1,25 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { NotificationEnum } from "ov-language-server-types";
+import { NotificationEnum, SyntaxToken } from "ov-language-server-types";
 import * as vscode from "vscode";
-import {
-  LanguageClient,
-  DidChangeTextDocumentNotification
-} from "vscode-languageclient";
+import { LanguageClient } from "vscode-languageclient";
 import { ClientCreator } from "./client-creator";
+import { DecoratorDictionary } from "./DecoratorDictionary";
+import {
+  getDecoratorTypes,
+  getSpecificDecorator,
+  ScopeEnum
+} from "./semantic-highlighting";
 import { StatusBarExtension } from "./status-bar-extension";
 import {
+  getCodeGenerationPath,
   getCulture,
   getCurrentOvDocumentUri,
   getLanguage,
-  getCurrentOvDocument,
-  handleGeneratedCodeNotification
+  handleGeneratedCodeNotification,
+  validateCurrentOvDocument
 } from "./util-functions";
-import { createConverter } from "vscode-languageclient/lib/codeConverter";
+import { ovLanguageId } from "./constants";
 
 var statusBarExtension: StatusBarExtension;
 
@@ -24,6 +28,8 @@ var statusBarExtension: StatusBarExtension;
 export function activate(context: vscode.ExtensionContext) {
   statusBarExtension = new StatusBarExtension(context);
   statusBarExtension.createItems();
+
+  setCodeGenerationPathToWorkspace();
 
   let client: LanguageClient = ClientCreator.createClient(context);
   let disposable = client.start();
@@ -40,16 +46,18 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   vscode.workspace.onDidChangeTextDocument(event => {
-    // TODO: Validate, if it actually was the schema.json
+    // TODO: Validate only, if it actually was the schema.json
     if (event.document.languageId === "json") {
-      let ovDocument = getCurrentOvDocument();
-      if (!!ovDocument) {
-        client.sendNotification(
-          DidChangeTextDocumentNotification.type,
-          createConverter().asChangeTextDocumentParams(ovDocument)
-        );
-      }
+      validateCurrentOvDocument(client);
     }
+  });
+
+  vscode.window.onDidChangeActiveTextEditor(event => {
+    if (!event || event.document.languageId !== ovLanguageId) {
+      return;
+    }
+
+    validateCurrentOvDocument(client);
   });
 
   // Start the client. This will also launch the server
@@ -63,6 +71,53 @@ function startUp(client: LanguageClient): void {
 
   client.onNotification(NotificationEnum.GeneratedCode, (params: any) =>
     handleGeneratedCodeNotification(params)
+  );
+
+  client.onNotification(
+    NotificationEnum.SemanticHighlighting,
+    (parameter: any) => {
+      let activeEditor = vscode.window.activeTextEditor;
+      const tokenList = JSON.parse(parameter) as SyntaxToken[];
+      if (!!activeEditor && activeEditor.document.languageId === ovLanguageId) {
+        for (const iterator of getDecoratorTypes()) {
+          activeEditor.setDecorations(iterator, []);
+        }
+
+        var decorations = new DecoratorDictionary();
+        for (var token of tokenList) {
+          if (!token.range) {
+            continue;
+          }
+
+          var range = new vscode.Range(
+            token.range.start.line,
+            token.range.start.character,
+            token.range.end.line,
+            token.range.end.character
+          );
+          decorations.add(token.pattern, range);
+        }
+
+        for (let [key, value] of Object.entries(decorations.get())) {
+          console.log(`${key}: ${value}`);
+          activeEditor.setDecorations(
+            getSpecificDecorator(key as ScopeEnum),
+            value
+          );
+        }
+      }
+    }
+  );
+
+  client.onNotification(
+    NotificationEnum.CommentKeywordChanged,
+    (params: string) => {
+      vscode.languages.setLanguageConfiguration("openVALIDATION", {
+        comments: {
+          lineComment: params as string
+        }
+      });
+    }
   );
 }
 
@@ -81,6 +136,20 @@ function updateCultureAndLanguage(client: LanguageClient): void {
     uri: uri
   });
   statusBarExtension.updateLanguage(language);
+}
+
+function setCodeGenerationPathToWorkspace(): void {
+  var codeGenerationPath: string | undefined = getCodeGenerationPath();
+  if (!codeGenerationPath || codeGenerationPath.trim() === "") {
+    let workspaceFolder: vscode.WorkspaceFolder[] | undefined =
+      vscode.workspace.workspaceFolders;
+    if (!workspaceFolder || workspaceFolder.length === 0) {
+      return;
+    }
+    vscode.workspace
+      .getConfiguration("openVALIDATION")
+      .update("codGeneration.path", workspaceFolder[0].uri.fsPath);
+  }
 }
 
 // this method is called when your extension is deactivated

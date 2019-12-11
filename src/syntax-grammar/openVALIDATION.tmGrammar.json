@@ -9,31 +9,9 @@
       "match": "\\b[0-9][0-9_]*([ui](8|16|32|64|128|s|size))?\\b"
     },
     {
-      "comment": "standard-comment",
-      "name": "comment.line",
-      "begin": "(?i)(KOMMENTAR |COMMENT )",
-      "end": "^[ \t]*$"
-    },
-    {
-      "comment": "pattern for general keywords",
+      "comment": "pattern for general keywords (english)",
       "name": "keyword.ov",
-      "match": "(?i)(\\bWENN\\b|\\bNOT EQUAL\\b|\\bEQUAL\\b|\\bSHORTER\\b|\\bUSE SCHEMA\\b|\\bIS\\b|\\bEQUALS\\b|\\bDANN\\b|\\bIF\\b|\\bTHEN\\b|\\bSMALLER\\b|\\bGREATER\\b|\\bAND\\b|\\bOR\\b|\\bUND\\b|\\bODER\\b|\\bALS\\b|\\bAS\\b|\\bWENN\\b|\\bUND\\b|\\bODER\\b|\\bDANN\\b|\\bLÄNGER ALS\\b|\\bKÜRZER ALS\\b|\\bHÖHER ALS\\b|\\bNIEDRIGER ALS\\b|\\bNIEDRIGER IST ALS\\b|\\bHÖHER IST ALS\\b|\\bGRÖßER IST ALS\\b|\\bKLEINER ALS\\b|\\bGRÖßER ALS\\b|\\bGERINGER IST ALS\\b|\\bGLEICH\\b|\\bUNGLEICH\\b|\\bIST KEIN\\b|\\bIST EIN\\b|\\bIST NICHT\\b|\\bIST GRÖßER ALS\\b|\\bIST MEHR ALS\\b|\\b IST HÖHER ALS\\b|\\bIST LÄNGER ALS\\b|\\bIST KLEINER ALS\\b|\\bIST WENIGER ALS\\b|\\bIST NIEDRIGER ALS\\b|\\bIST KÜRZER ALS\\b|\\bIST GRÖßER ODER GLEICH\\b|\\bIST MEHR ALS ODER GLEICH\\b|\\bIST KLEINER ODER GLEICH\\b|\\bIST WENIGER ALS ODER GLEICH\\b|\\bENTHÄLT ALLES\\b|\\bIST EINS VON\\b|\\bIST KEINES VON\\b|\\bIST ENTHALTEN IN\\b|\\bIST VORHANDEN\\b|\\bIST NICHT VORHANDEN\\b|\\bIST\\b|\\bALS\\b|\\bKLEINER\\b|\\bGRÖßER\\b|\\bGERINGER\\b|\\bWENIGER\\b)"
-    },
-    {
-      "comment": "pattern for actions in a rule",
-      "name": "string.other",
-      "begin": "(?<=(DANN |THEN |dann |then ))",
-      "end": "^[ \t]*$"
-    },
-    {
-      "comment": "pattern for actions in a rule",
-      "name": "string.other",
-      "begin": "(?i)(?<=(USE SCHEMA ))",
-      "end": "^[ \t]*$"
-    },
-    {
-      "name": "constant.language.boolean",
-      "match": "(?:ja|nein)\\b"
+      "match": "(?i)(\\bUSE SCHEMA\\b)"
     }
   ]
 }

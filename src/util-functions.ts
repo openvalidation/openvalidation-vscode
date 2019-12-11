@@ -7,6 +7,12 @@ import {
 } from "ov-language-server-types";
 import * as path from "path";
 import * as vscode from "vscode";
+import {
+  LanguageClient,
+  DidChangeTextDocumentNotification
+} from "vscode-languageclient";
+import { createConverter } from "vscode-languageclient/lib/codeConverter";
+import { ovLanguageId } from "./constants";
 
 export function getCulture(): string {
   var culture: string = vscode.workspace.getConfiguration("openVALIDATION")
@@ -25,7 +31,44 @@ export function getLanguage(): string {
   return language;
 }
 
+export function getCodeGenerationPath(): string | undefined {
+  let workspaceFolder: vscode.WorkspaceFolder[] | undefined =
+    vscode.workspace.workspaceFolders;
+  let rootPath: string | undefined;
+  if (!workspaceFolder || workspaceFolder.length === 0) {
+    if (
+      !vscode.workspace
+        .getConfiguration("openVALIDATION")
+        .get("codGeneration.path")
+    ) {
+      return undefined;
+    }
+    rootPath = vscode.workspace
+      .getConfiguration("openVALIDATION")
+      .get("codGeneration.path");
+  } else {
+    if (
+      !vscode.workspace
+        .getConfiguration("openVALIDATION")
+        .get("codGeneration.path")
+    ) {
+      rootPath = workspaceFolder[0].uri.fsPath;
+    }
+    rootPath = vscode.workspace
+      .getConfiguration("openVALIDATION")
+      .get("codGeneration.path");
+  }
+  return rootPath;
+}
+
 export function getCurrentOvDocument(): vscode.TextDocument | undefined {
+  if (
+    !!vscode.window.activeTextEditor &&
+    vscode.window.activeTextEditor.document.languageId === ovLanguageId
+  ) {
+    return vscode.window.activeTextEditor.document;
+  }
+
   var document = vscode.workspace.textDocuments.find(document => {
     return document.languageId === "openVALIDATION";
   });
@@ -37,16 +80,19 @@ export function getCurrentOvDocumentUri(): string {
   return !ovDocument ? "" : ovDocument.uri.toString();
 }
 
-export function handleGeneratedCodeNotification(params: any) {
-  let workspaceFolder: vscode.WorkspaceFolder[] | undefined =
-    vscode.workspace.workspaceFolders;
-  if (!workspaceFolder || workspaceFolder.length === 0) {
-    return;
+export function validateCurrentOvDocument(client: LanguageClient): void {
+  let ovDocument = getCurrentOvDocument();
+  if (!!ovDocument) {
+    client.sendNotification(
+      DidChangeTextDocumentNotification.type,
+      createConverter().asChangeTextDocumentParams(ovDocument)
+    );
   }
+}
 
-  let rootPath: string = workspaceFolder[0].uri.fsPath;
+export function handleGeneratedCodeNotification(params: any) {
   let jsonParams = JSON.parse(params) as ICodeNotification;
-  let folderPath: string = rootPath + "\\" + jsonParams.language;
+  let folderPath: string = getCodeGenerationPath() + "\\" + jsonParams.language;
 
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath, { recursive: true });

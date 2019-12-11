@@ -7,6 +7,15 @@
   "engines": {
     "vscode": "^1.40.0"
   },
+  "extensionPack": [
+    "openVALIDATION.vscode"
+  ],
+  "icon": "images/logo.png",
+  "publisher": "openVALIDATION",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NLueg/vscode-ov.git"
+  },
   "categories": [
     "Programming Languages",
     "Linters"
@@ -53,7 +62,8 @@
             "enables the english-language for openVALIDATION-Code",
             "enables the german-language for openVALIDATION-Code",
             "enables the russian-language for openVALIDATION-Code"
-          ]
+          ],
+          "scope": "window"
         },
         "openVALIDATION.language": {
           "type": "string",
@@ -71,7 +81,14 @@
             "generates JavaScript code",
             "generates Node code",
             "generates Python code"
-          ]
+          ],
+          "scope": "window"
+        },
+        "openVALIDATION.codGeneration.path": {
+          "type": "string",
+          "default": null,
+          "description": "defines the folder where the code should be generated to",
+          "scope": "window"
         }
       }
     }
@@ -82,20 +99,18 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile"
   },
+  "dependencies": {
+    "ov-language-server": "file:../ov-language-server",
+    "ov-language-server-types": "0.0.5",
+    "vscode-languageclient": "^5.2.1"
+  },
   "devDependencies": {
-    "@types/glob": "^7.1.1",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^12.11.7",
+    "@types/node": "^12.12.16",
     "@types/vscode": "^1.40.0",
     "glob": "^7.1.5",
     "mocha": "^6.2.2",
-    "typescript": "^3.6.4",
     "tslint": "^5.20.0",
+    "typescript": "^3.7.3",
     "vscode-test": "^1.2.2"
-  },
-  "dependencies": {
-    "ov-language-server": "0.0.14",
-    "ov-language-server-types": "0.0.3",
-    "vscode-languageclient": "^5.2.1"
   }
 }
