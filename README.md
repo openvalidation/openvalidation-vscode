@@ -16,6 +16,8 @@ Besides, the extension generates code from the written openVALIDATION code.
 The programming language can be picked from the available programming languages.
 Also, the folder where the code should be generated can be picked in the settings.
 
+![General features](/images/vscode-ov.gif)
+
 ## Extension Settings
 
 This extension contributes the following settings:
@@ -25,6 +27,8 @@ This extension contributes the following settings:
 - `openVALIDATION.codeGeneration.path`: defines the folder where the code should be generated to
 
 The language and culture can also be changed with the status bar:
+
+![Changing with status bar](/images/status-bar.gif)
 
 ## Known Issues
 
