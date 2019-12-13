@@ -24,12 +24,14 @@ This extension contributes the following settings:
 - `openVALIDATION.language`: defines the programming language of the generated code
 - `openVALIDATION.codeGeneration.path`: defines the folder where the code should be generated to
 
+The language and culture can also be changed with the status bar:
+
 ## Known Issues
 
 Nearly all currently released features of openVALIDATION are supported here. But we currently don't support multiple files which are bundled with the [import](https://docs.openvalidation.io/grammatik/strukturierung-des-regelwerkes#splitting-the-set-of-rules-into-several-files) command. We still need to find a way to implement language features for multiple files in openVALIDATION.
 
 ## Release Notes
 
-### 0.0.1
+### 0.1.0
 
 Initial release.
