@@ -1,5 +1,8 @@
 # Language Support for openVALIDATION for Visual Studio Code
 
+[![version](https://vsmarketplacebadge.apphb.com/version/openVALIDATION.vscode-ov.svg)](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop)
+[![downloads](https://vsmarketplacebadge.apphb.com/downloads-short/openVALIDATION.vscode-ov.svg)](https://vsmarketplacebadge.apphb.com/downloads-short/James-Yu.latex-workshop.svg)
+
 This extension provides support for the domain specific language [openVALIDATION](https://github.com/openvalidation/openvalidation).
 The extension uses the [ov-language-server](https://github.com/openvalidation/ov-language-server) to provide the language features.
 
