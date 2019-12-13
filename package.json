@@ -7,9 +7,6 @@
   "engines": {
     "vscode": "^1.40.0"
   },
-  "extensionPack": [
-    "openVALIDATION.vscode"
-  ],
   "icon": "images/logo.png",
   "publisher": "openVALIDATION",
   "repository": {
@@ -51,6 +48,7 @@
             "de",
             "ru"
           ],
+          "description": "specifies the natural language of the openVALIDATION code",
           "enumDescriptions": [
             "enables the english-language for openVALIDATION-Code",
             "enables the german-language for openVALIDATION-Code",
@@ -68,6 +66,7 @@
             "Node",
             "Python"
           ],
+          "description": "defines the programming language which should be generated",
           "enumDescriptions": [
             "generates Java code",
             "generates CSharp code",
