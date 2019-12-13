@@ -39,24 +39,24 @@ export function getCodeGenerationPath(): string | undefined {
     if (
       !vscode.workspace
         .getConfiguration("openVALIDATION")
-        .get("codGeneration.path")
+        .get("codeGeneration.path")
     ) {
       return undefined;
     }
     rootPath = vscode.workspace
       .getConfiguration("openVALIDATION")
-      .get("codGeneration.path");
+      .get("codeGeneration.path");
   } else {
     if (
       !vscode.workspace
         .getConfiguration("openVALIDATION")
-        .get("codGeneration.path")
+        .get("codeGeneration.path")
     ) {
       rootPath = workspaceFolder[0].uri.fsPath;
     }
     rootPath = vscode.workspace
       .getConfiguration("openVALIDATION")
-      .get("codGeneration.path");
+      .get("codeGeneration.path");
   }
   return rootPath;
 }
@@ -90,9 +90,12 @@ export function validateCurrentOvDocument(client: LanguageClient): void {
   }
 }
 
-export function handleGeneratedCodeNotification(params: any) {
+export function handleGeneratedCodeNotification(params: any): void {
   let jsonParams = JSON.parse(params) as ICodeNotification;
-  let folderPath: string = getCodeGenerationPath() + "\\" + jsonParams.language;
+  let folderPath: string | undefined = getCodeGenerationPath();
+  if (!folderPath) {
+    return;
+  }
 
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath, { recursive: true });

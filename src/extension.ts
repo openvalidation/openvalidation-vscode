@@ -148,7 +148,7 @@ function setCodeGenerationPathToWorkspace(): void {
     }
     vscode.workspace
       .getConfiguration("openVALIDATION")
-      .update("codGeneration.path", workspaceFolder[0].uri.fsPath);
+      .update("codeGeneration.path", workspaceFolder[0].uri.fsPath);
   }
 }
 

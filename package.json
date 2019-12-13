@@ -1,6 +1,6 @@
 {
   "name": "vscode-ov",
-  "displayName": "vscode-ov",
+  "displayName": "openVALIDATION Language Support",
   "description": "VSCode extension for the openVALIDATION language",
   "version": "0.0.1",
   "license": "MIT",
@@ -40,13 +40,6 @@
         ]
       }
     ],
-    "grammars": [
-      {
-        "language": "openVALIDATION",
-        "scopeName": "source.ov",
-        "path": "./src/syntax-grammar/openVALIDATION.tmGrammar.json"
-      }
-    ],
     "configuration": {
       "title": "openVALIDATION",
       "properties": {
@@ -84,7 +77,7 @@
           ],
           "scope": "window"
         },
-        "openVALIDATION.codGeneration.path": {
+        "openVALIDATION.codeGeneration.path": {
           "type": "string",
           "default": null,
           "description": "defines the folder where the code should be generated to",
@@ -100,15 +93,15 @@
     "pretest": "npm run compile"
   },
   "dependencies": {
-    "ov-language-server": "file:../ov-language-server",
-    "ov-language-server-types": "0.0.5",
+    "ov-language-server": "0.x.x",
+    "ov-language-server-types": "0.x.x",
     "vscode-languageclient": "^5.2.1"
   },
   "devDependencies": {
-    "@types/node": "^12.12.16",
+    "@types/glob": "^7.1.1",
+    "@types/node": "^12.12.17",
     "@types/vscode": "^1.40.0",
     "glob": "^7.1.5",
-    "mocha": "^6.2.2",
     "tslint": "^5.20.0",
     "typescript": "^3.7.3",
     "vscode-test": "^1.2.2"

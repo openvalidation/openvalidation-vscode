@@ -1,8 +1,12 @@
 import * as path from "path";
 import * as vscode from "vscode";
 import {
+  CloseAction,
+  ErrorAction,
+  ErrorHandler,
   LanguageClient,
   LanguageClientOptions,
+  Message,
   ServerOptions,
   TransportKind
 } from "vscode-languageclient";
@@ -34,6 +38,15 @@ export class ClientCreator {
       }
     };
 
+    const errorHandler: ErrorHandler = {
+      error: (error: Error, message: Message, count: number): ErrorAction => {
+        vscode.window.showErrorMessage(error.message);
+        return ErrorAction.Continue;
+      },
+      closed: (): CloseAction => {
+        return CloseAction.Restart;
+      }
+    };
     // Options to control the language client
     let clientOptions: LanguageClientOptions = {
       // Register the server for plain text documents
@@ -43,7 +56,8 @@ export class ClientCreator {
       synchronize: {
         // Notify the server about file changes to '.clientrc files contained in the workspace
         fileEvents: vscode.workspace.createFileSystemWatcher("**/.clientrc")
-      }
+      },
+      errorHandler: errorHandler
     };
 
     // Create the language client and start the client.
