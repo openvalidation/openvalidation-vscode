@@ -1,7 +1,7 @@
 # Language Support for openVALIDATION for Visual Studio Code
 
-[![version](https://vsmarketplacebadge.apphb.com/version/openVALIDATION.vscode-ov.svg)](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop)
-[![downloads](https://vsmarketplacebadge.apphb.com/downloads-short/openVALIDATION.vscode-ov.svg)](https://vsmarketplacebadge.apphb.com/downloads-short/James-Yu.latex-workshop.svg)
+[![version](https://vsmarketplacebadge.apphb.com/version/openVALIDATION.vscode-ov.svg)](https://marketplace.visualstudio.com/items?itemName=openVALIDATION.vscode-ov)
+[![downloads](https://vsmarketplacebadge.apphb.com/downloads-short/openVALIDATION.vscode-ov.svg)](https://vsmarketplacebadge.apphb.com/downloads-short/openVALIDATION.vscode-ov.svg)
 
 This extension provides support for the domain specific language [openVALIDATION](https://github.com/openvalidation/openvalidation).
 The extension uses the [ov-language-server](https://github.com/openvalidation/ov-language-server) to provide the language features.
@@ -13,7 +13,7 @@ For Windows, we deliver the JRE of openJDK8 to avoid this. But on other platform
 
 ## Features
 
-All [features](https://github.com/openvalidation/ov-language-server#implemented-features-of-the-protocol) that are implemented in the language-server are provided here. In addition to the features of the [Language-Server-Protocol](https://microsoft.github.io/language-server-protocol/) we provide semantical highlighting, which is also implemented in the language-server.
+All [features](https://github.com/openvalidation/ov-language-server#implemented-features-of-the-protocol) that are implemented in the language-server are provided here. In addition to the features of the [Language-Server-Protocol](https://microsoft.github.io/language-server-protocol/) we provide semantical highlighting, which is also implemented in the language-server. The semantical highlighting is implemented with the [decorations-API](https://vscode.rocks/decorations/) of VSCode.
 
 Besides, the extension generates code from the written openVALIDATION code.
 The programming language can be picked from the available programming languages.
