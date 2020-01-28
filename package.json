@@ -92,7 +92,7 @@
     "pretest": "npm run compile"
   },
   "dependencies": {
-    "ov-language-server": "^0.1.0",
+    "ov-language-server": "^0.1.2",
     "ov-language-server-types": "^0.1.0",
     "vscode-languageclient": "^5.2.1"
   },
