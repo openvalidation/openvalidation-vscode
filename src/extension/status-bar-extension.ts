@@ -49,7 +49,7 @@ export class StatusBarExtension {
   private generateQuickPickItemsForLanguage(): vscode.QuickPickItem[] {
     let returnList: vscode.QuickPickItem[] = [];
 
-    for (let [key, value] of Object.entries(LanguageEnum)) {
+    for (let [key,] of Object.entries(LanguageEnum)) {
       returnList.push(<vscode.QuickPickItem>{
         label: key,
         description: `Changes the language to ${key}`
@@ -86,7 +86,7 @@ export class StatusBarExtension {
   private generateQuickPickItemsForCulture(): vscode.QuickPickItem[] {
     let returnList: vscode.QuickPickItem[] = [];
 
-    for (let [key, value] of Object.entries(CultureEnum)) {
+    for (let [key,] of Object.entries(CultureEnum)) {
       returnList.push(<vscode.QuickPickItem>{
         label: key,
         description: `Changes the culture to ${key}`
