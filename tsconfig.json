@@ -1,12 +1,27 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
+    "target": "es2017",
     "module": "commonjs",
-    "target": "es6",
-    "outDir": "out",
-    "lib": ["es6"],
+    "moduleResolution": "node",
     "sourceMap": true,
+    "declarationMap": true,
+    "inlineSources": false,
+    "declaration": true,
+    "stripInternal": true,
+    "lib": ["es2017", "dom"],
+    "strict": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
     "rootDir": "src",
-    "strict": true
+    "outDir": "out",
+    "baseUrl": "./",
+    "paths": {
+      "src/*": ["src/*"],
+      "test/*": ["src/test/*"]
+    },
+    "skipLibCheck": true
   },
-  "exclude": ["node_modules", ".vscode-test"]
+  "include": ["src"],
+  "exclude": ["node_modules", "vscode-test"]
 }

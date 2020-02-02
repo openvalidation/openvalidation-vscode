@@ -1,0 +1,5 @@
+use schema ./schema.json
+
+  If name NOT EQUAL peter
+THEN error
+

@@ -5,7 +5,7 @@
   "version": "0.1.2",
   "license": "MIT",
   "engines": {
-    "vscode": "^1.40.0"
+    "vscode": "^1.33.0"
   },
   "icon": "images/logo.png",
   "publisher": "openVALIDATION",
@@ -21,7 +21,7 @@
     "onLanguage:openVALIDATION",
     "onLanguage:ov"
   ],
-  "main": "./out/extension.js",
+  "main": "./out/extension/extension.js",
   "contributes": {
     "languages": [
       {
@@ -86,23 +86,27 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "postinstall": "vscode-install",
+    "clean": "rimraf out",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile"
+    "build": "npm run clean && npm run compile",
+    "pretest": "npm run build",
+    "test": "sh ./scripts/e2e.sh",
+    "vscode:prepublish": "npm run build"
   },
   "dependencies": {
-    "ov-language-server": "^0.1.2",
+    "ov-language-server": "^0.1.3",
     "ov-language-server-types": "^0.1.0",
     "vscode-languageclient": "^5.2.1"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
-    "@types/node": "^12.12.17",
-    "@types/vscode": "^1.40.0",
+    "@types/jest": "^25.1.1",
+    "@types/node": "^12.11.7",
     "glob": "^7.1.5",
-    "tslint": "^5.20.0",
-    "typescript": "^3.7.3",
-    "vscode-test": "^1.2.2"
+    "jest": "^25.1.0",
+    "tslint": "^5.16.0",
+    "typescript": "^3.6.4",
+    "vscode": "^1.1.35"
   }
 }

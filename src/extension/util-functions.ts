@@ -1,16 +1,8 @@
 import * as fs from "fs";
-import {
-  CultureEnum,
-  getFileEnding,
-  ICodeNotification,
-  LanguageEnum
-} from "ov-language-server-types";
+import { CultureEnum, getFileEnding, ICodeNotification, LanguageEnum } from "ov-language-server-types";
 import * as path from "path";
 import * as vscode from "vscode";
-import {
-  LanguageClient,
-  DidChangeTextDocumentNotification
-} from "vscode-languageclient";
+import { DidChangeTextDocumentNotification, LanguageClient } from "vscode-languageclient";
 import { createConverter } from "vscode-languageclient/lib/codeConverter";
 import { ovLanguageId } from "./constants";
 

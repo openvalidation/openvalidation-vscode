@@ -4,22 +4,11 @@ import { NotificationEnum, SyntaxToken } from "ov-language-server-types";
 import * as vscode from "vscode";
 import { LanguageClient } from "vscode-languageclient";
 import { ClientCreator } from "./client-creator";
-import { DecoratorDictionary } from "./DecoratorDictionary";
-import {
-  getDecoratorTypes,
-  getSpecificDecorator,
-  ScopeEnum
-} from "./semantic-highlighting";
-import { StatusBarExtension } from "./status-bar-extension";
-import {
-  getCodeGenerationPath,
-  getCulture,
-  getCurrentOvDocumentUri,
-  getLanguage,
-  handleGeneratedCodeNotification,
-  validateCurrentOvDocument
-} from "./util-functions";
 import { ovLanguageId } from "./constants";
+import { DecoratorDictionary } from "./DecoratorDictionary";
+import { getDecoratorTypes, getSpecificDecorator, ScopeEnum } from "./semantic-highlighting";
+import { StatusBarExtension } from "./status-bar-extension";
+import { getCodeGenerationPath, getCulture, getCurrentOvDocumentUri, getLanguage, handleGeneratedCodeNotification, validateCurrentOvDocument } from "./util-functions";
 
 let statusBarExtension: StatusBarExtension;
 let client: LanguageClient;
