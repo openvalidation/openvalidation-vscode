@@ -21,7 +21,8 @@ import {
 } from "./util-functions";
 import { ovLanguageId } from "./constants";
 
-var statusBarExtension: StatusBarExtension;
+let statusBarExtension: StatusBarExtension;
+let client: LanguageClient;
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -31,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   setCodeGenerationPathToWorkspace();
 
-  let client: LanguageClient = ClientCreator.createClient(context);
+  client = ClientCreator.createClient(context);
   let disposable = client.start();
 
   vscode.workspace.onDidChangeConfiguration(
@@ -46,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   vscode.workspace.onDidChangeTextDocument(event => {
-    // TODO: Validate only, if it actually was the schema.json
+    // TODO: Validate only, if it actually was the used schema
     if (event.document.languageId === "json") {
       validateCurrentOvDocument(client);
     }
@@ -153,4 +154,9 @@ function setCodeGenerationPathToWorkspace(): void {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() {
+  if (!client) {
+    return undefined;
+  }
+  return client.stop();
+}
